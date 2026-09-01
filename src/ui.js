@@ -39,7 +39,20 @@ export function renderShell({ title, nav, content, brand = "HyperOS Updates" }) 
       <span>Xiaomi | HyperOS Updates</span>
       <a href="#/styleguide">Стиль проекта</a>
     </footer>
+    <div id="global-notice" class="notice" hidden role="status" aria-live="polite"></div>
   `;
+}
+
+export function setNotice(message, type = "success") {
+  const node = qs("#global-notice");
+  if (!node) return;
+  node.textContent = message;
+  node.className = `notice notice--${type}`;
+  node.hidden = false;
+  window.clearTimeout(window.__aircNoticeTimer);
+  window.__aircNoticeTimer = window.setTimeout(() => {
+    node.hidden = true;
+  }, 3000);
 }
 
 export function route() {

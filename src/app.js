@@ -3,10 +3,21 @@ import {
   escapeHtml,
   formatNewsDate,
   onRouteChange,
+  qs,
+  qsa,
   renderShell,
   route,
+  setNotice,
 } from "./ui.js";
 import { renderStyleguide } from "./styleguide.js";
+
+function wireTelegramLinks() {
+  for (const link of qsa("[data-tg-link]")) {
+    link.addEventListener("click", () => {
+      setNotice("Открываем Telegram — оттуда переходи в подписку", "success");
+    });
+  }
+}
 
 const nav = (active) => [
   { href: "#/", label: "Новости", active: active === "/" },
@@ -21,7 +32,7 @@ function newsCard(item) {
       <p>${escapeHtml(item.excerpt)}</p>
       <p class="record-meta">${escapeHtml(formatNewsDate(item.date))}</p>
       <div class="actions" style="margin-top:14px">
-        <a class="button button--small" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener">Перейти в Telegram</a>
+        <a class="button button--small" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener" data-tg-link>Перейти в Telegram</a>
       </div>
     </article>
   `;
@@ -42,7 +53,7 @@ function renderHome() {
             <h1>${escapeHtml(project.title)}</h1>
             <p class="lead">${escapeHtml(project.lead)}</p>
             <div class="actions">
-              <a class="button" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener">Перейти в Telegram</a>
+              <a class="button" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener" data-tg-link>Перейти в Telegram</a>
             </div>
           </div>
           <aside class="panel">
@@ -50,7 +61,7 @@ function renderHome() {
             <h2 style="font-size:32px">Xiaomi | HyperOS Updates</h2>
             <p>Полные материалы, подробности и все обновления — только в Telegram.</p>
             <div class="actions" style="margin-top:20px">
-              <a class="button" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener">Подписаться</a>
+              <a class="button" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener" data-tg-link>Подписаться</a>
             </div>
           </aside>
         </div>
@@ -62,7 +73,10 @@ function renderHome() {
             ${published.length ? published.map(newsCard).join("") : `
               <div class="empty" style="grid-column:1/-1">
                 <h3>Новостей пока нет</h3>
-                <p>Загляни в Telegram-канал — там уже есть свежие обновления.</p>
+                <p>В Telegram-канале уже есть свежие обновления.</p>
+                <div class="actions" style="justify-content:center;margin-top:16px">
+                  <a class="button button--small" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener" data-tg-link>Перейти в Telegram</a>
+                </div>
               </div>
             `}
           </div>
@@ -70,16 +84,44 @@ function renderHome() {
       </section>
     `,
   });
+  wireTelegramLinks();
 }
 
-async function render() {
-  const current = route();
-  if (current === "/styleguide") return renderStyleguide();
-  return renderHome();
-}
-
-onRouteChange(() => {
-  render().catch((error) => {
-    console.error(error);
+function renderError() {
+  renderShell({
+    title: `${project.name} — ошибка`,
+    brand: project.name,
+    nav: nav("/"),
+    content: `
+      <section class="section">
+        <div class="container">
+          <div class="empty">
+            <h3>Не получилось показать страницу</h3>
+            <p>Попробуй ещё раз или перейди сразу в Telegram-канал.</p>
+            <div class="actions" style="justify-content:center;margin-top:16px">
+              <button id="retry" class="button button--small">Попробовать снова</button>
+              <a class="button button--small button--secondary" href="${escapeHtml(project.telegramUrl)}" target="_blank" rel="noopener" data-tg-link>Перейти в Telegram</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    `,
   });
-});
+  qs("#retry")?.addEventListener("click", () => {
+    render();
+  });
+  wireTelegramLinks();
+}
+
+function render() {
+  try {
+    const current = route();
+    if (current === "/styleguide") return renderStyleguide();
+    return renderHome();
+  } catch (error) {
+    console.error(error);
+    renderError();
+  }
+}
+
+onRouteChange(render);
