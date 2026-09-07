@@ -25,6 +25,7 @@ export function renderShell({ title, nav, content, brand = "HyperOS Updates" }) 
   document.title = title;
   const root = qs("#app");
   root.innerHTML = `
+    <div class="scroll-progress" id="scroll-progress"></div>
     <header class="site-header">
       <a class="brand" href="#/">
         <img src="./src/assets/logo-64.png" alt="" width="32" height="32" class="brand-logo">
@@ -37,7 +38,6 @@ export function renderShell({ title, nav, content, brand = "HyperOS Updates" }) 
     <main id="main">${content}</main>
     <footer class="site-footer">
       <span>Xiaomi | HyperOS Updates</span>
-      <a href="#/styleguide">Стиль проекта</a>
     </footer>
     <div id="global-notice" class="notice" hidden role="status" aria-live="polite"></div>
   `;

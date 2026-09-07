@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const projectRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const port = Number(process.env.PORT || 4173);
+const host = process.env.HOST || "127.0.0.1";
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -45,7 +46,7 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`\nAIRC starter запущен: http://127.0.0.1:${port}\n`);
+server.listen(port, host, () => {
+  console.log(`\nAIRC starter запущен: http://${host === "0.0.0.0" ? "127.0.0.1" : host}:${port}\n`);
   console.log("Остановить: Ctrl+C\n");
 });

@@ -1,9 +1,25 @@
 export const project = {
   name: "HyperOS Updates",
-  eyebrow: "Новости Xiaomi, Redmi, Poco и HyperOS",
-  title: "Главное о Xiaomi, Redmi, Poco и HyperOS — за 30 секунд",
   lead: "Короткая суть новости прямо на сайте. Полный материал, подробности и разбор — в Telegram-канале «Xiaomi | HyperOS Updates».",
   telegramUrl: "https://t.me/+pRM20UDS729mYjUy",
+  mainIdea: "Твой Xiaomi меняется каждый день. Здесь — всё, что стоит знать.",
+  devicesNote: "Больше 40 моделей Xiaomi, Redmi и Poco уже получили стабильное июльское обновление.",
+  devices: [
+    { name: "Xiaomi 17", status: "Первым получил бету HyperOS 4" },
+    { name: "Redmi K90", status: "В первой волне HyperOS 4" },
+    { name: "Redmi Note 17 Pro", status: "Готовится к анонсу в сентябре" },
+    { name: "Poco X8", status: "Готовится к анонсу в сентябре" },
+  ],
+  materials: [
+    { title: "Лаунчер HyperOS", description: "Ставится поверх MIUI, без полной перепрошивки" },
+    { title: "Обои с новых устройств", description: "Подборка с последних релизов Xiaomi и Redmi" },
+    { title: "Гайд по скрытым фичам", description: "Как включить то, что не видно в настройках" },
+  ],
+  reasons: [
+    { title: "Из первых рук", description: "Публикуем сразу, как выходит обновление или новость — без пересказов и задержек" },
+    { title: "Файлы в одном месте", description: "Не искать по форумам — всё уже собрано" },
+    { title: "Простым языком", description: "Разборы фич без технического жаргона" },
+  ],
   news: [
     {
       status: "published",

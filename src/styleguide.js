@@ -6,7 +6,7 @@ export function renderStyleguide(activePath = "/styleguide") {
     title: `Стиль проекта — ${project.name}`,
     brand: project.name,
     nav: [
-      { href: "#/", label: "Новости", active: false },
+      { href: "#/", label: "Главная", active: false },
       { href: "#/styleguide", label: "Стиль", active: true },
     ],
     content: `
